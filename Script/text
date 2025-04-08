@@ -1,0 +1,31 @@
+// $sql = "SELECT id, username FROM users";
+// $stmt = $conn->prepare($sql);
+// $stmt->execute();
+// $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>แสดงผู้ใช้งาน</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <h1>ข้อมูลผู้ใช้งาน</h1>
+    <table cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>ชื่อผู้ใช้งาน</th>
+        </tr>
+        <?php foreach ($result as $n): ?>
+            <tr>
+                <td><?= htmlspecialchars($n['id']) ?></td>
+                <td><?= htmlspecialchars($n['username']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <a href="logout.php">ออกจากระบบ</a>
+</body>
+
+</html> -->
