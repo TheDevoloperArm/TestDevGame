@@ -32,13 +32,16 @@ public class loginManage : MonoBehaviour
                 string jsonResponse = www.downloadHandler.text;
                 Debug.Log("Raw JSON: " + jsonResponse);
                 UserResponse response = JsonUtility.FromJson<UserResponse>(jsonResponse);
-                
+
                 if (response.status == "success")
                 {
-                    PlayerPrefs.SetInt("Diamond : ", response.diamond);
-                    PlayerPrefs.SetInt("Heart : ", response.heart);
-                    // SceneManage.LoadScene("Lobby");
+                    PlayerPrefs.SetInt("Diamond", response.diamond);
+                    PlayerPrefs.SetInt("Heart", response.heart);
+                    PlayerPrefs.SetString("Username", response.user);
+                    SceneManager.LoadScene("Lobby");
+
                     Debug.Log("Login Success, Welcome user : " + response.user + " " + "Diamond : " + response.diamond + " " + "Heart : " + response.heart);
+                    messageText.text = "Login Success Welcome: " + response.user;
                 }
                 else
                 {
@@ -57,5 +60,4 @@ public class loginManage : MonoBehaviour
         public int heart;
         public string message;
     }
-
 }

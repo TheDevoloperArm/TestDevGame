@@ -14,20 +14,35 @@ try {
 
     if ($result) {
         if (password_verify($password, $result['password'])) {
-            echo json_encode([
-                "status" => "success",
-                "user" => $result['username'],
-                "diamond" => $result['diamond'],
-                "heart" => $result['heart']
-            ]);
+            $stmt = $conn->prepare("SELECT user_id FROM login_history WHERE user_id = :user_id");
+            $stmt->execute(['user_id' => $result['id']]);
+            if ($stmt->fetch()) {
+                $stmt = $conn->prepare("UPDATE login_history SET login_time = NOW() WHERE user_id = :user_id");
+                $stmt->execute(['user_id' => $result['id']]);
+                echo json_encode([
+                    "status" => "success",
+                    "user" => $result['username'],
+                    "diamond" => $result['diamond'],
+                    "heart" => $result['heart']
+                ]);
+            } else {
+                $stmt = $conn->prepare("INSERT INTO login_history (user_id) VALUES (:user_id)");
+                $stmt->execute(['user_id' => $result['id']]);
+                echo json_encode([
+                    "status" => "success",
+                    "user" => $result['username'],
+                    "diamond" => $result['diamond'],
+                    "heart" => $result['heart']
+                ]);
+            }
         } else {
-            echo json_encode(["status" => "error", "message" => "รหัสผ่านไม่ถูกต้อง"]);
+            echo json_encode(["status" => "error", "message" => "Wrong password."]);
         }
     } else {
-        echo json_encode(["status" => "error", "message" => "ไม่พบชื่อผู้ใช้งานนี้"]);
+        echo json_encode(["status" => "error", "message" => "Can't found current username."]);
     }
 } catch (PDOException $e) {
-    echo json_encode(["status" => "error", "message" => "เกิดข้อผิดพลาดในระบบฐานข้อมูล : " . $e->getMessage()]);
+    echo json_encode(["status" => "error", "message" => "An error occurred in the system : " . $e->getMessage()]);
 }
 
 // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
