@@ -16,6 +16,7 @@ try {
         if (password_verify($password, $result['password'])) {
             $stmt = $conn->prepare("SELECT user_id FROM login_history WHERE user_id = :user_id");
             $stmt->execute(['user_id' => $result['id']]);
+            $_SESSION['id'] = $result['id'];
             if ($stmt->fetch()) {
                 $stmt = $conn->prepare("UPDATE login_history SET login_time = NOW() WHERE user_id = :user_id");
                 $stmt->execute(['user_id' => $result['id']]);

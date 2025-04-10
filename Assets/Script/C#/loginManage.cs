@@ -13,7 +13,6 @@ public class loginManage : MonoBehaviour
 
     public void Login()
     {
-        Debug.Log("Logining.....");
         StartCoroutine(LoginCoroutine(usernameInput.text, passwordInput.text));
     }
 
@@ -26,6 +25,7 @@ public class loginManage : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post("https://test-piggy.codedefeat.com/worktest/dev04/login.php", form))
         {
             yield return www.SendWebRequest();
+            Debug.Log("Logining.....");
 
             if (www.result == UnityWebRequest.Result.Success)
             {
