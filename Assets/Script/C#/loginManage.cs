@@ -9,7 +9,47 @@ public class loginManage : MonoBehaviour
 {
     public InputField usernameInput;
     public InputField passwordInput;
+    public GameObject palnalLogin;
+    public GameObject panalAlertMSG;
     public Text messageText;
+    private string statusIn;
+
+    void Awake()
+    {
+        if (!palnalLogin.activeSelf)
+        {
+            palnalLogin.SetActive(true);
+        }
+
+        if (panalAlertMSG.activeSelf)
+        {
+            panalAlertMSG.SetActive(false);
+        }
+    }
+
+    public void OK()
+    {
+        if (statusIn == "success")
+        {
+            SceneManager.LoadScene("Lobby");
+            palnalLogin.SetActive(true);
+            panalAlertMSG.SetActive(false);
+            passwordInput.text = "";
+            statusIn = "";
+        }
+        else
+        {
+            palnalLogin.SetActive(true);
+            panalAlertMSG.SetActive(false);
+            passwordInput.text = "";
+            statusIn = "";
+        }
+    }
+
+    public void SignUp()
+    {
+        SceneManager.LoadScene("Register Scene");
+    }
 
     public void Login()
     {
@@ -35,17 +75,24 @@ public class loginManage : MonoBehaviour
 
                 if (response.status == "success")
                 {
+                    statusIn = response.status;
+                    PlayerPrefs.SetInt("Id", response.id);
                     PlayerPrefs.SetInt("Diamond", response.diamond);
                     PlayerPrefs.SetInt("Heart", response.heart);
                     PlayerPrefs.SetString("Username", response.user);
-                    SceneManager.LoadScene("Lobby");
 
                     Debug.Log("Login Success, Welcome user : " + response.user + " " + "Diamond : " + response.diamond + " " + "Heart : " + response.heart);
-                    messageText.text = "Login Success Welcome: " + response.user;
+                    messageText.text = "Login Success Welcome : " + response.user;
+
+                    palnalLogin.SetActive(false);
+                    panalAlertMSG.SetActive(true);
                 }
                 else
                 {
-                    messageText.text = "Login Failed: " + response.message;
+                    statusIn = response.status;
+                    messageText.text = "Login Failed : " + response.message;
+                    palnalLogin.SetActive(false);
+                    panalAlertMSG.SetActive(true);
                 }
             }
         }
@@ -54,6 +101,7 @@ public class loginManage : MonoBehaviour
     [System.Serializable]
     private class UserResponse
     {
+        public int id;
         public string status;
         public string user;
         public int diamond;

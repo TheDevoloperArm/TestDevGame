@@ -44,3 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: AlertMSG
+    uniqueID: 2166571195
+    locked: 0
+  - name: HUD
+    uniqueID: 4131630483
+    locked: 0
